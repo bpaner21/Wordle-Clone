@@ -1,7 +1,6 @@
 /*background colors pulled from original wordle app*/
 
 :root {
-
     --lightestGreen: hsl(71, 85%, 40%);
     --lightGreen: hsl(73, 84%, 37%);
     --darkGreen: hsl(120, 34%, 29%);
