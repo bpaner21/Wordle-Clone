@@ -1,37 +1,88 @@
+/*background colors pulled from original wordle app*/
+
 *, *::after, *::before{
     box-sizing: border-box;
     font-family: Helvetica;
 }
 
 body {
-    /*background color pulled from original wordle app*/
     background-color: hsl(240, 3%, 7%);
+
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    margin: 0;
-    padding: 1em;
+
     font-size: clamp(.5rem, 2.5vmin, 1.5rem);
+
+    margin: 0;
+    min-height: 100vh;
+    padding: 1em;
+}
+
+/*Grid*/
+
+.guess-grid {
+    display: grid;
+
+    align-content: center;
+    justify-content: center;
+
+    flex-grow: 1;
+    gap: 0.25em;
+    grid-template-columns: repeat(5, 4em);
+    grid-template-rows: repeat(6, 4em);
+    margin-bottom: 1em;
+}
+
+/*Tile*/
+
+.tile {
+    border: 0.05em solid hsl(240, 2%, 23%);
+    color: white;
+
+    font-size: 2em;
+    text-transform: uppercase;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+
+.tile[data-state="active"] {
+    border-color: hsl(200, 1%, 34%);
+}
+
+.tile[data-state="wrong"] {
+    background-color: hsl(240, 2%,3%);
+    border: none;
+}
+
+.tile[data-state="wrong-location"] {
+    background-color: hsl(49, 51%, 47%);
+    border: none;
+}
+
+.tile[data-state="correct"] {
+    background-color: hsl(115, 29%, 43%);
+    border:none;
 }
 
 /*Keyboard*/
 
 .keyboard {
     display: grid;
+    gap: 0.25em;
     grid-template-columns: repeat(20, minmax(auto, 1.25em));
     grid-auto-rows: 3em;
-    gap: 0.25em;
     justify-content: center;
 }
 
+/*Key*/
+
 .key {
     font-size: inherit;
-    grid-column: span 2;
-    border: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
     background-color: hsl(
         var(--hue, 200),
         var(--saturation, 1%),
@@ -40,7 +91,17 @@ body {
     color: white;
     fill: white;
     text-transform: uppercase;
+
+    border: none;
     border-radius: 0.25em;
+    grid-column: span 2;
+    padding: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
     cursor: pointer;
     user-select: none;
 }
@@ -52,7 +113,6 @@ body {
 .key > svg {
     width: 1.75em;
     height: 1.75em;
-
 }
 
 .key:hover, .key:focus {
@@ -73,47 +133,4 @@ body {
     --hue: 115;
     --saturation: 29%;
     --lightness: 43%;
-}
-
-/*Grid*/
-
-.guess-grid {
-    display: grid;
-    justify-content: center;
-    align-content: center;
-    flex-grow: 1;
-    grid-template-columns: repeat(5, 4em);
-    grid-template-rows: repeat(6, 4em);
-    gap: 0.25em;
-    margin-bottom: 1em;
-}
-
-.tile {
-    font-size: 2em;
-    color: white;
-    border: 0.05em solid hsl(240, 2%, 23%);
-    text-transform: uppercase;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-}
-
-.tile[data-state="active"] {
-    border-color: hsl(200, 1%, 34%);
-}
-
-.tile[data-state="wrong"] {
-    border: none;
-    background-color: hsl(240, 2%,3%);
-}
-
-.tile[data-state="wrong-location"] {
-    border: none;
-    background-color: hsl(49, 51%, 47%);
-}
-
-.tile[data-state="correct"] {
-    border:none;
-    background-color: hsl(115, 29%, 43%);
 }
