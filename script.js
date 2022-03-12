@@ -8,6 +8,7 @@ const dictionary = [
 
 const wordLength = 5
 const flipAnimationDuration = 500
+const danceAnimationDuration = 500
 
 const dateOffset = new Date(2022, 0, 1)
 const msOffset = Date.now() - dateOffset
@@ -154,9 +155,11 @@ function flipTiles(tile, index, array, guess) {
             tile.addEventListener("transitionend", () => {
                 updateUsedKeys()
                 startInteraction()
-            })
+
+                checkWinLose(guess, array)
+            }, {once: true})
         }
-    })
+    }, {once: true})
 }
 
 function updateUsedKeys() {
@@ -164,7 +167,34 @@ function updateUsedKeys() {
     
     setTiles.forEach(tile => {
         const key = keyboard.querySelector(`[data-key="${tile.dataset.letter}"i]`)
-        
         key.classList.add(tile.dataset.state)
+    })
+}
+
+function checkWinLose(guess, tiles) {
+    //check win
+    if (guess === todaysSolution) {
+        danceTiles(tiles)
+        stopInteraction()
+        return
+    }
+
+    //check loss
+    const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])")
+    //console.log(remainingTiles.length)
+    if (remainingTiles.length === 0) {
+        stopInteraction()
+    }
+}
+
+function danceTiles(tiles) {
+    tiles.forEach((tile, index) => {
+        setTimeout(() => {
+            tile.classList.add("dance")
+
+            tile.addEventListener("animationend", () => {
+                tile.classList.remove("dance")
+            }, {once: true})
+        }, index * danceAnimationDuration / 5)
     })
 }
