@@ -72,6 +72,10 @@ function getActiveTiles() {
     return guessGrid.querySelectorAll('[data-state="active"]')
 }
 
+function getGuessedTiles() {
+    return guessGrid.querySelectorAll('[data-state="correct"], [data-state="wrong"], [data-state="wrong-location"]')
+}
+
 function pressKey(key) {
     const activeTiles = getActiveTiles()
     if (activeTiles.length >= wordLength) return
@@ -103,9 +107,9 @@ function submitGuess() {
     const guess = activeTiles.reduce((word, tile) => {
         return word + tile.dataset.letter
     }, "")
-    console.log(guess)
+    //console.log(guess)
 
-    console.log(solutions.includes(guess) || dictionary.includes(guess))
+    //console.log(solutions.includes(guess) || dictionary.includes(guess))
 
     if (!solutions.includes(guess) && !dictionary.includes(guess)) {
         shakeTiles(activeTiles)
@@ -119,6 +123,7 @@ function submitGuess() {
 function shakeTiles(tiles) {
     tiles.forEach(tile => {
         tile.classList.add("shake")
+
         tile.addEventListener("animationend", () => {
             tile.classList.remove("shake")
         }, {once: true})
@@ -127,7 +132,7 @@ function shakeTiles(tiles) {
 
 function flipTiles(tile, index, array, guess) {
     const letter = tile.dataset.letter
-    const key = keyboard.querySelector(`[data-key="${letter}"i]`)
+    
     setTimeout(() => {
         tile.classList.add("flip")
     }, index * flipAnimationDuration / 2)
@@ -137,21 +142,29 @@ function flipTiles(tile, index, array, guess) {
 
         if (todaysSolution[index] === letter) {
             tile.dataset.state = "correct"
-            key.classList.add("correct")
         }
         else if (todaysSolution.includes(letter)) {
             tile.dataset.state = "wrong-location"
-            key.classList.add("wrong-location")
         }
         else {
             tile.dataset.state = "wrong"
-            key.classList.add("wrong")
         }
 
         if (index === array.length - 1) {
             tile.addEventListener("transitionend", () => {
+                updateUsedKeys()
                 startInteraction()
             })
         }
+    })
+}
+
+function updateUsedKeys() {
+    const setTiles = getGuessedTiles()
+    
+    setTiles.forEach(tile => {
+        const key = keyboard.querySelector(`[data-key="${tile.dataset.letter}"i]`)
+        
+        key.classList.add(tile.dataset.state)
     })
 }
