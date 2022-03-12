@@ -1,5 +1,3 @@
-/*background colors pulled from original wordle app*/
-
 :root {
     --lightestGreen: hsl(71, 85%, 40%);
     --lightGreen: hsl(73, 84%, 37%);
@@ -13,7 +11,6 @@
 }
 
 body {
-    /*background-color: hsl(240, 3%, 7%);*/
     background-color: var(--lightGreen);
 
     display: flex;
@@ -44,10 +41,7 @@ body {
 /*Tile*/
 
 .tile {
-    /*border: 0.05em solid hsl(240, 2%, 23%);*/
-    /*color: white;*/
-
-    border: 0.07em solid var(--darkestGreen);
+    border: 0.07em solid var(--darkGreen);
     color: var(--darkestGreen);
 
     font-size: 2em;
@@ -59,24 +53,24 @@ body {
     justify-content: center;
     align-items: center;
     user-select: none;
+
+    transition: transform 250ms;
 }
 
 .tile[data-state="active"] {
     /*border-color: hsl(200, 1%, 34%);*/
 
-    border-color: var(--darkGreen);
+    border-color: var(--darkestGreen);
 }
 
 .tile[data-state="wrong"] {
-    /*background-color: hsl(240, 2%,3%);*/
     border: none;
 
     background-color: var(--darkestGreen);
-    color: var(--lightGreen);
+    color: var(--darkGreen);
 }
 
 .tile[data-state="wrong-location"] {
-    /*background-color: hsl(49, 51%, 47%);*/
     border: none;
 
     background-color: var(--darkGreen);
@@ -84,12 +78,9 @@ body {
 }
 
 .tile[data-state="correct"] {
-    /*background-color: hsl(115, 29%, 43%);*/
-    /*border:none;*/
-
     background-color: var(--lightestGreen);
-    border: 0.1em solid var(--darkGreen);
-    color: var(--darkGreen);
+    border: 0.1em solid var(--darkestGreen);
+    color: var(--darkestGreen);
 }
 
 /*Tile Shake Animation*/
@@ -124,6 +115,12 @@ body {
     }
 }
 
+/*Tile Flip Animation*/
+
+.tile.flip {
+    transform: rotateX(90deg);
+}
+
 /*Keyboard*/
 
 .keyboard {
@@ -140,27 +137,14 @@ body {
     font-size: inherit;
     font-weight: bold;
 
-    /*background-color: hsl(
-        var(--hue, 200),
-        var(--saturation, 1%),
-        calc(var(--lightness-offset, 0%) + var(--lightness, 51%))
-    );*/
-    /*color: white;*/
-    /*fill: white;*/
+    background-color: var(--lightGreen);
 
-    background-color: hsl(
-        var(--hue, 73),
-        var(--saturation, 84%),
-        calc(var(--lightness-offset, 0%) + var(--lightness, 37%))
-    );
-
-    color: var(--darkestGreen);
-    fill: var(--darkestGreen);
+    color: var(--darkGreen);
+    fill: var(--darkGreen);
 
     text-transform: uppercase;
 
-    /*border: none;*/
-    border: 0.1em solid var(--darkestGreen);
+    border: 0.1em solid var(--darkGreen);
 
     border-radius: 0.5em;
 
@@ -188,44 +172,30 @@ body {
 }
 
 .key.wrong {
-    /*--lightness: 23%;*/
-
     border: none;
-    color: var(--lightGreen);
-
-    --hue: 120;
-    --saturation: 58%;
-    --lightness: 14%;
+    background-color: var(--darkestGreen);
+    color: var(--darkGreen);
 }
 
 .key.wrong-location {
-    /*--hue: 49;
-    --saturation: 51%;
-    --lightness: 47%;*/
-
-    border: none;
+    background-color: var(--darkGreen);
     color: var(--lightestGreen);
-
-    --hue: 120;
-    --saturation: 34%;
-    --lightness: 29%;
 }
 
 .key.correct {
-    /*--hue: 115;
-    --saturation: 29%;
-    --lightness: 43%;*/
-
-    border: 0.15em solid var(--darkGreen);
-    color: var(--darkGreen);
-
-    --hue: 71;
-    --saturation: 83%;
-    --lightness: 40%;
+    border: 0.15em solid var(--darkestGreen);
+    background-color: var(--lightestGreen);
+    color: var(--darkestGreen);
 }
 
 .key:hover, .key:focus {
-    --lightness-offset: 5%;
+    filter: brightness(120%);
 
-    border-color: var(--darkGreen);
+    border-color: var(--darkestGreen);
+    color: var(--darkestGreen);
+    fill: var(--darkestGreen);
+}
+
+.key.wrong:hover, .key.wrong:focus {
+    color: var(--lightGreen);
 }

@@ -7,6 +7,7 @@ const dictionary = [
 ]
 
 const wordLength = 5
+const flipAnimationDuration = 500
 
 const dateOffset = new Date(2022, 0, 1)
 const msOffset = Date.now() - dateOffset
@@ -14,8 +15,9 @@ const dayOffset = Math.floor(msOffset / 1000 / 60 / 60 / 24)
 //console.log(dayOffset)
 
 const todaysSolution = solutions[dayOffset]
-//console.log(todaysSolution)
+console.log(todaysSolution)
 
+const keyboard = document.querySelector("[data-keyboard]")
 const guessGrid = document.querySelector("[data-guess-grid]")
 
 startInteraction()
@@ -101,11 +103,17 @@ function submitGuess() {
     const guess = activeTiles.reduce((word, tile) => {
         return word + tile.dataset.letter
     }, "")
+    console.log(guess)
 
-    if (!dictionary.includes(guess)) {
+    console.log(solutions.includes(guess) || dictionary.includes(guess))
+
+    if (!solutions.includes(guess) && !dictionary.includes(guess)) {
         shakeTiles(activeTiles)
         return
     }
+
+    stopInteraction()
+    activeTiles.forEach((...params) => flipTiles(...params, guess))
 }
 
 function shakeTiles(tiles) {
@@ -114,5 +122,36 @@ function shakeTiles(tiles) {
         tile.addEventListener("animationend", () => {
             tile.classList.remove("shake")
         }, {once: true})
+    })
+}
+
+function flipTiles(tile, index, array, guess) {
+    const letter = tile.dataset.letter
+    const key = keyboard.querySelector(`[data-key="${letter}"i]`)
+    setTimeout(() => {
+        tile.classList.add("flip")
+    }, index * flipAnimationDuration / 2)
+
+    tile.addEventListener("transitionend", () => {
+        tile.classList.remove("flip")
+
+        if (todaysSolution[index] === letter) {
+            tile.dataset.state = "correct"
+            key.classList.add("correct")
+        }
+        else if (todaysSolution.includes(letter)) {
+            tile.dataset.state = "wrong-location"
+            key.classList.add("wrong-location")
+        }
+        else {
+            tile.dataset.state = "wrong"
+            key.classList.add("wrong")
+        }
+
+        if (index === array.length - 1) {
+            tile.addEventListener("transitionend", () => {
+                startInteraction()
+            })
+        }
     })
 }
