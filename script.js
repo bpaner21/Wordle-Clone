@@ -36,7 +36,7 @@ function handleMouseClick(e) {
         return
     }
 
-    if(e.target.matches("[data-delete")) {
+    if(e.target.matches("[data-delete]")) {
         deleteKey()
         return
     }
@@ -55,12 +55,12 @@ function handleKeyPress(e) {
         return
     }
 
-    if (e.key == "Backspace" || e.key == "Delete") {
+    if (e.key === "Backspace" || e.key === "Delete") {
         deleteKey()
         return
     }
 
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
         submitGuess()
         return
     }
@@ -84,7 +84,6 @@ function pressKey(key) {
 function deleteKey() {
     const activeTiles = getActiveTiles()
     const lastTile = activeTiles[activeTiles.length - 1]
-
     if (lastTile == null) return
 
     lastTile.textContent = ""
@@ -94,8 +93,26 @@ function deleteKey() {
 
 function submitGuess() {
     const activeTiles = [...getActiveTiles()]
-    if (activeTiles.length != wordLength) return
+    if (activeTiles.length !== wordLength) {        
+        shakeTiles(activeTiles)
+        return
+    }
 
-    
+    const guess = activeTiles.reduce((word, tile) => {
+        return word + tile.dataset.letter
+    }, "")
+
+    if (!dictionary.includes(guess)) {
+        shakeTiles(activeTiles)
+        return
+    }
 }
 
+function shakeTiles(tiles) {
+    tiles.forEach(tile => {
+        tile.classList.add("shake")
+        tile.addEventListener("animationend", () => {
+            tile.classList.remove("shake")
+        }, {once: true})
+    })
+}

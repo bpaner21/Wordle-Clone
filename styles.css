@@ -92,6 +92,38 @@ body {
     color: var(--darkGreen);
 }
 
+/*Tile Shake Animation*/
+
+.tile.shake {
+    animation: shake 250ms ease-in-out;
+}
+
+@keyframes shake {
+    10% {
+        transform: translateX(-5%);
+    }
+
+    30% {
+        transform: translateX(5%);
+    }
+
+    50% {
+        transform: translateX(-7.5%);
+    }
+
+    70% {
+        transform: translateX(7.5%);
+    }
+
+    90% {
+        transform: translateX(5%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
 /*Keyboard*/
 
 .keyboard {
@@ -151,6 +183,8 @@ body {
 .key > svg {
     width: 1.75em;
     height: 1.75em;
+
+    pointer-events: none;
 }
 
 .key.wrong {
